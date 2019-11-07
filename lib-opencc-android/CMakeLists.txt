@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.4.1)
 include_directories(src/main/cpp/opencc/deps/darts-clone)
 include_directories(src/main/cpp/opencc/deps/rapidjson-0.11)
 include_directories(src/main/cpp/opencc/deps/tclap-1.2.1)
-include_directories(src/main/cpp/opencc)
 
 set(
         LIBOPENCC_HEADERS
@@ -50,45 +49,21 @@ set(
         src/main/cpp/opencc/TextDict.cpp
         src/main/cpp/opencc/UTF8StringSlice.cpp
         src/main/cpp/opencc/UTF8Util.cpp
+        src/main/cpp/chineseconverter.cpp
 )
 
 
-add_library(libopencc ${LIBOPENCC_SOURCES})
+add_library(lib-opencc-android SHARED ${LIBOPENCC_SOURCES})
 
 set_target_properties(
-        libopencc
+        lib-opencc-android
         PROPERTIES
         LINKER_LANGUAGE
         CXX
         OUTPUT_NAME
-        opencc
+        opencc-android
         VERSION
         1.0.0
         SOVERSION
         2
 )
-link_libraries(libopencc)
-add_library(lib-opencc-android SHARED src/main/cpp/chineseconverter.cpp)
-
-install(
-        TARGETS libopencc
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-)
-
-install(
-        FILES ${LIBOPENCC_HEADERS}
-        DESTINATION ${DIR_INCLUDE}/opencc
-)
-#
-#add_library(
-#    lib-opencc-android
-#    SHARED
-#    src/main/cpp/chineseconverter.cpp
-#    )
-#find_library(
-#    log-lib
-#    log
-#    android
-#    atomic
-#    )
